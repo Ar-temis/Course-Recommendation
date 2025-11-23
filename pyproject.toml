@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "crec"
+dynamic = ["version"]
+description = 'This project is aimed to develop a course recommendation for university students using LLM and RAG techniques.'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Ar-temis", email = "temuulen.enkhtamir@dukekunshan.edu.cn" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "dspy",
+  "chromadb",
+  "huggingface-hub",
+  "langchain",
+  "langchain-huggingface"
+]
+
+[project.urls]
+Documentation = "https://github.com/Ar-temis/course-recommendation#readme"
+Issues = "https://github.com/Ar-temis/course-recommendation/issues"
+Source = "https://github.com/Ar-temis/course-recommendation"
+
+[tool.hatch.version]
+path = "src/crec/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/course_recommendation tests}"
+
+[tool.coverage.run]
+source_pkgs = ["course_recommendation", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/course_recommendation/__about__.py",
+]
+
+[tool.coverage.paths]
+course_recommendation = ["src/crec"]
+tests = ["tests", "*/course-recommendation/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
