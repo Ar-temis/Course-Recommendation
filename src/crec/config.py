@@ -1,7 +1,7 @@
 import os
 import dotenv
 from typing import Any, Mapping, Optional
-from urllib.parse import quote_plus
+from pathlib import Path
 
 dotenv.load_dotenv()
 
@@ -45,13 +45,13 @@ class Config:
         llm_api_key = _env("LLM_API_KEY")
         redis_host = _env("REDIS_HOST")
         redis_password = _env("REDIS_PASSWORD")
-        SQLALCHEMY_DATABASE_URI = "postgresql://{}:{}@{}:{}/{}".format(
-            _env("DB_USER"),
-            quote_plus(_env("DB_PASSWORD")),
-            _env("DB_HOST"),
-            _env("DB_PORT"),
-            _env("DB_NAME"),
-        )
+        # SQLALCHEMY_DATABASE_URI = "postgresql://{}:{}@{}:{}/{}".format(
+        #     _env("DB_USER"),
+        #     quote_plus(_env("DB_PASSWORD")),
+        #     _env("DB_HOST"),
+        #     _env("DB_PORT"),
+        #     _env("DB_NAME"),
+        # )
 
         self._store.update(
             {
@@ -60,9 +60,9 @@ class Config:
                 "llm_url": "http://localhost:18085/v1",
                 "llm_api_key": llm_api_key,
                 "llm_temperature": 1,
-                "embedding": "BAAI/bge-m3",
+                "embedding": "qwen3-embedding:0.6b",
                 "tokenizer": "/datapool/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/9c925d64d72725edaf899c6cb9c377fd0709d9c5",
-                "tei_url": "http://localhost:18080",
+                "tei_url": "http://localhost:46515",
                 "context_window": 32000,
                 # Documents
                 "data_dir": "/datapool/course-rec",
@@ -73,10 +73,10 @@ class Config:
                 "redis_password": redis_password,
                 "index_name": "course-rec",
                 # Chroma
-                "chroma_db_port": 12400,
-                "chroma_collection": "course-rec",
+                "chroma_path": "/home/artemis/Developer/Course-Recommendation/",
+                "major_req_col": "major_req_col",
                 # PSQL
-                "psql_uri": SQLALCHEMY_DATABASE_URI,
+                # "psql_uri": SQLALCHEMY_DATABASE_URI,
             }
         )
         # refresh read-only view

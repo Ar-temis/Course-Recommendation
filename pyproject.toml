@@ -7,7 +7,7 @@ name = "crec"
 dynamic = ["version"]
 description = 'This project is aimed to develop a course recommendation for university students using LLM and RAG techniques.'
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11, <3.13"
 license = "MIT"
 keywords = []
 authors = [
@@ -27,9 +27,12 @@ classifiers = [
 dependencies = [
   "dspy",
   "chromadb",
-  "huggingface-hub",
   "langchain",
-  "langchain-huggingface"
+  "langchain-community",
+  "langchain-chroma",
+  "langchain-ollama",
+  "lxml",
+  "bs4"
 ]
 
 [project.urls]
