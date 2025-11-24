@@ -73,7 +73,7 @@ class Config:
                 "redis_password": redis_password,
                 "index_name": "course-rec",
                 # Chroma
-                "chroma_path": "/home/artemis/Developer/Course-Recommendation/",
+                "chroma_path": "/home/artemis/Developer/Course-Recommendation/chroma-data/",
                 "major_req_col": "major_req_col",
                 # PSQL
                 # "psql_uri": SQLALCHEMY_DATABASE_URI,

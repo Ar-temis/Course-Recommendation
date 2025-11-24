@@ -22,7 +22,6 @@ log.setLevel(logging.INFO)
 client = chromadb.PersistentClient(path=config.chroma_path)
 embed_model = OllamaEmbeddings(model=config.embedding)
 
-client.delete_collection(config.major_req_col)
 collection = client.get_or_create_collection(
     config.major_req_col,
 )
@@ -75,10 +74,10 @@ def reader_worker(html_paths: str, buffer: Queue):
     splitter = HTMLSemanticPreservingSplitter(
         headers_to_split_on=HEADERS,
         separators=["\n\n", "\n", ". ", "! ", "? "],
-        max_chunk_size=512,
+        max_chunk_size=1024,
         chunk_overlap=32,
         elements_to_preserve=["table", "ul", "ol"],
-        denylist_tags=["script", "style", "head", "p"],
+        denylist_tags=["script", "style", "head"],
     )
     for path in html_paths:
         log.info(f"Reading {path}")
@@ -94,7 +93,7 @@ def reader_worker(html_paths: str, buffer: Queue):
                         ]
                     ),
                     "metadata": {
-                        "file_path": path,
+                        "file_name": Path(path).name,
                         **split_doc.metadata,
                     },
                 }
