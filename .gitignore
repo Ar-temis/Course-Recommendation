@@ -2,6 +2,7 @@
 *.sqlite3
 data/
 chroma-data/
+dbs/
 uv.lock
 # Byte-compiled / optimized / DLL files
 __pycache__/
