@@ -1,6 +1,7 @@
 import os
 import dotenv
 from typing import Any, Mapping, Optional
+from pathlib import Path
 
 dotenv.load_dotenv()
 
@@ -42,16 +43,8 @@ class Config:
     # Internal: initialize defaults once
     def _initialize_defaults(self):
         llm_api_key = _env("LLM_API_KEY")
-        redis_host = _env("REDIS_HOST")
-        redis_password = _env("REDIS_PASSWORD")
-        # SQLALCHEMY_DATABASE_URI = "postgresql://{}:{}@{}:{}/{}".format(
-        #     _env("DB_USER"),
-        #     quote_plus(_env("DB_PASSWORD")),
-        #     _env("DB_HOST"),
-        #     _env("DB_PORT"),
-        #     _env("DB_NAME"),
-        # )
-
+        db_dir = Path(__file__).parent.parent.parent.joinpath("dbs/")
+        data_dir = Path(__file__).parent.parent.parent.joinpath("data/")
         self._store.update(
             {
                 # Core
@@ -60,24 +53,19 @@ class Config:
                 "llm_api_key": llm_api_key,
                 "llm_temperature": 1,
                 "embedding": "qwen3-embedding:0.6b",
-                "tokenizer": "/datapool/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/9c925d64d72725edaf899c6cb9c377fd0709d9c5",
                 "tei_url": "http://localhost:46515",
                 "context_window": 32000,
                 # Documents
                 "data_dir": "/datapool/course-rec",
                 "nodes_path": "/datapool/course-rec/nodes.json",
                 "pipeline_cache": "./pipeline_cache",
-                # Redis
-                "redis_host": redis_host,
-                "redis_password": redis_password,
-                "index_name": "course-rec",
+                "majors_doc": str(data_dir.joinpath("majors.json")),
                 # Chroma
-                "chroma_path": "/home/artemis/Developer/Course-Recommendation/dbs/chroma-data/",
+                "chroma_path": str(db_dir.joinpath("chroma_data/")),
                 "major_req_col": "major_req_col",
                 "courses_col": "courses",
                 # SQLite
-                "schedule_path": "/home/artemis/Developer/Course-Recommendation/dbs/schedule.db",
-                # "psql_uri": SQLALCHEMY_DATABASE_URI,
+                "schedule_path": str(db_dir.joinpath("schedule.db")),
             }
         )
         # refresh read-only view

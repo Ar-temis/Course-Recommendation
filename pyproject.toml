@@ -32,7 +32,9 @@ dependencies = [
   "langchain-chroma",
   "langchain-ollama",
   "lxml",
-  "bs4"
+  "bs4",
+  "thefuzz",
+  "pypdf"
 ]
 
 [project.urls]
