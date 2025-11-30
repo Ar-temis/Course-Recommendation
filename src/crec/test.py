@@ -1,13 +1,14 @@
 from pprint import pprint
 from crec.ingestion.setup import setup
-from crec.config import config
 
 client, model = setup()
 
-collection = client.get_or_create_collection(config.major_req_col)
+collection = client.get_or_create_collection("courses")
 
-query = model.embed_query("Environmental Science / Biogeochemistry description")
+query = model.embed_query("Compsci 203")
 
-results = collection.query(query_embeddings=[query], n_results=5)
+results = collection.query(
+    query_embeddings=query, where={"course_code": "COMPSCI 203"}, n_results=5
+)
 
 pprint(results)

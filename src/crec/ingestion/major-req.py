@@ -1,5 +1,4 @@
 # used to create vector db out of documents
-import os
 import hashlib
 import logging
 from queue import Queue
@@ -11,6 +10,8 @@ from langchain_ollama import OllamaEmbeddings
 from crec.config import config
 from langchain_text_splitters import HTMLSemanticPreservingSplitter
 
+from utils import sanitize_directory
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -18,48 +19,6 @@ logging.basicConfig(
 
 log = logging.getLogger(__file__)
 log.setLevel(logging.INFO)
-
-client = chromadb.PersistentClient(path=config.chroma_path)
-embed_model = OllamaEmbeddings(model=config.embedding)
-
-collection = client.get_or_create_collection(
-    config.major_req_col,
-)
-
-
-# Helper functions
-def sanitize(filename: str) -> str:
-    """Return lower cased whitespace replaced with (-) str.
-
-    Parameters
-        filename (str): Filename you want to sanitize
-
-    Returns
-        str: sanitized filename
-    """
-
-    temp = filename.lower().strip()
-    temp = temp.replace(" ", "_")
-    return temp
-
-
-def sanitize_directory(folder: str) -> list[str]:
-    folder_path = Path(folder)
-    sanitized_paths = []
-
-    for file_path in folder_path.iterdir():
-        if file_path.is_file():
-            new_name = sanitize(file_path.name)
-
-            # Only rename if necessary
-            if new_name != file_path.name:
-                new_path = file_path.with_name(new_name)
-                file_path.rename(new_path)
-                sanitized_paths.append(os.path.join(folder, new_name))
-            else:
-                sanitized_paths.append(os.path.join(folder, new_name))
-
-    return sanitized_paths
 
 
 # Reader worker: Parses HTMLs
@@ -106,6 +65,18 @@ def reader_worker(html_paths: str, buffer: Queue):
 
 # Embedding worker: Embeds split HTMLs
 def embed_worker(buffer: Queue):
+    client = chromadb.PersistentClient(path=config.chroma_path)
+    embed_model = OllamaEmbeddings(model=config.embedding)
+
+    try:
+        client.delete_collection(config.major_req_col)
+    except ValueError as e:
+        print("Warning:", e)
+
+    collection = client.get_or_create_collection(
+        config.major_req_col,
+    )
+
     while True:
         item = buffer.get()
 

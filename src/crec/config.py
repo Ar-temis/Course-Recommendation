@@ -1,7 +1,6 @@
 import os
 import dotenv
 from typing import Any, Mapping, Optional
-from pathlib import Path
 
 dotenv.load_dotenv()
 
@@ -75,6 +74,7 @@ class Config:
                 # Chroma
                 "chroma_path": "/home/artemis/Developer/Course-Recommendation/chroma-data/",
                 "major_req_col": "major_req_col",
+                "courses_col": "courses",
                 # PSQL
                 # "psql_uri": SQLALCHEMY_DATABASE_URI,
             }
