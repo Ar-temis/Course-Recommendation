@@ -1,3 +1,4 @@
+# used to create vector db out of documents
 import os
 import hashlib
 import logging
@@ -9,7 +10,6 @@ import chromadb
 from langchain_ollama import OllamaEmbeddings
 from crec.config import config
 from langchain_text_splitters import HTMLSemanticPreservingSplitter
-from langchain_community.document_loaders import BSHTMLLoader
 
 logging.basicConfig(
     level=logging.INFO,
