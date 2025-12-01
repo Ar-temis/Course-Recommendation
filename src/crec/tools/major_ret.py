@@ -5,19 +5,19 @@ from crec.config import config
 
 
 def major_retriever(
-    major_query: str,
-) -> dict[str, list]:
+    major_queries: list[str],
+) -> list[dict]:
     """Retrieve top matching major requirements based on fuzzy string matching.
 
-    Searches through a JSON document containing major program information and
-    returns the top 3 matches using token-based fuzzy matching.
+    Searches through a JSON document containing major information and
+    returns the top matches using token-based fuzzy matching.
 
     Args:
-        major_query (str): The search query string representing a major or
-            academic program name (e.g., "Computer Science", "Biogeochemistry").
+        major_queries list[str]: The list of search query string representing
+            a major (e.g., "Computer Science", ["Biogeochemistry", "Data Science"]).
 
     Returns:
-        list: A list of dictionaries. Each dictionary includes:
+        list[dict]: A list of dictionaries. Each dictionary includes:
             - 'text': Matched major requirements, and credit information
             - 'metadata': Dict with 'Header 4' (major name) and 'file_name' keys
 
@@ -26,6 +26,8 @@ def major_retriever(
             configured path.
         json.JSONDecodeError: If the majors document contains invalid JSON.
     """
+
+    result = []
 
     if not Path(config.majors_doc).exists():
         msg = f"Majors document does not exist at {config.majors_doc}"
@@ -37,16 +39,15 @@ def major_retriever(
         except json.JSONDecodeError:
             raise json.JSONDecodeError
 
-    matches = process.extract(
-        major_query,
-        majors.keys(),
-        scorer=fuzz.token_set_ratio,
-        limit=3,
-    )
+    for major_query in major_queries:
+        matches = process.extract(
+            major_query,
+            majors.keys(),
+            scorer=fuzz.token_set_ratio,
+            limit=1,
+        )
 
-    result = []
-
-    for match in matches:
-        result.append(majors.get(match[0]))
+        for match in matches:
+            result.append(majors.get(match[0]))
 
     return result

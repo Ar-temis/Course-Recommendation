@@ -69,13 +69,8 @@ def pipeline(folder: Path | str):
     paths = sanitize_directory(folder)
     client = chromadb.PersistentClient(path=config.chroma_path)
 
-    try:
-        client.delete_collection("courses")
-    except ValueError as e:
-        print("Warning:", e)
-
     collection = client.get_or_create_collection(
-        name="courses",
+        name=config.courses_col,
         embedding_function=OllamaEmbeddingFunction(model_name=config.embedding),
     )
     for file_path in paths:
@@ -91,6 +86,7 @@ def pipeline(folder: Path | str):
             print(f"Adding course: {course.get('course_code')}")
             text = str(course)
             id = hashlib.md5(text.encode()).hexdigest()
+            reqs = course.get("prerequisites")
             collection.add(
                 ids=[id],
                 documents=[text],
@@ -99,6 +95,7 @@ def pipeline(folder: Path | str):
                         "file_name": file_name,
                         "course_code": course.get("course_code"),
                         "course_name": course.get("course_name"),
+                        "prerequisites": reqs if reqs else "None",
                     }
                 ],
             )

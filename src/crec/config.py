@@ -52,7 +52,7 @@ class Config:
                 "llm_url": "http://localhost:18085/v1",
                 "llm_api_key": llm_api_key,
                 "llm_temperature": 1,
-                "embedding": "qwen3-embedding:0.6b",
+                "embedding": "embeddinggemma",
                 "tei_url": "http://localhost:46515",
                 "context_window": 32000,
                 # Documents
