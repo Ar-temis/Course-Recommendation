@@ -74,5 +74,5 @@ def load_csv_into_db(db_path: str, csv_path: str):
 
 if __name__ == "__main__":
     csv_path = "/home/artemis/Developer/Course-Recommendation/data/CLASS_SCHEDULE_Session 3_Spring 2026.csv"
-    init_db(config.schedule_path)
+    init_db(config.schedule_db)
     load_csv_into_db(config.schedule_path, csv_path)

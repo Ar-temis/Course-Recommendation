@@ -65,7 +65,7 @@ class Config:
                 "major_req_col": "major_req_col",
                 "courses_col": "courses",
                 # SQLite
-                "schedule_path": str(db_dir.joinpath("schedule.db")),
+                "schedule_db": str(db_dir.joinpath("schedule.db")),
             }
         )
         # refresh read-only view
