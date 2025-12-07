@@ -35,7 +35,7 @@ def course_retriever(course_queries: list[str]) -> list[dict]:
 
     Args:
         course_queries (list[str]): List of search queries. Can be course codes
-            in format "DEPT NNN" (e.g., "COMPSCI 101") or natural language
+            in format "DEPT NNN" (e.g. "BEHAVSCI 102", "COMPSCI 101") or natural language
             queries (e.g., "introduction to programming").
 
     Returns:

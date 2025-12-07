@@ -42,19 +42,18 @@ class Config:
 
     # Internal: initialize defaults once
     def _initialize_defaults(self):
-        llm_api_key = _env("LLM_API_KEY")
         db_dir = Path(__file__).parent.parent.parent.joinpath("dbs/")
         data_dir = Path(__file__).parent.parent.parent.joinpath("data/")
         self._store.update(
             {
                 # Core
-                "llm": "Qwen/Qwen3-30B-A3B-Instruct-2507",
-                "llm_url": "http://localhost:18085/v1",
-                "llm_api_key": llm_api_key,
+                "llm": "ollama_chat/qwen3:8b",
+                "llm_url": "http://localhost:11434",
+                "llm_api_key": "",
                 "llm_temperature": 1,
                 "embedding": "embeddinggemma",
                 "tei_url": "http://localhost:46515",
-                "context_window": 32000,
+                "context_window": 8000,
                 # Documents
                 "data_dir": "/datapool/course-rec",
                 "nodes_path": "/datapool/course-rec/nodes.json",

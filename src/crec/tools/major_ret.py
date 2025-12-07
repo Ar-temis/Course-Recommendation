@@ -14,17 +14,12 @@ def major_retriever(
 
     Args:
         major_queries list[str]: The list of search query string representing
-            a major (e.g., "Computer Science", ["Biogeochemistry", "Data Science"]).
+            a major (e.g., ["Computer Science"], ["Biogeochemistry", "Data Science"]).
 
     Returns:
         list[dict]: A list of dictionaries. Each dictionary includes:
             - 'text': Matched major requirements, and credit information
-            - 'metadata': Dict with 'Header 4' (major name) and 'file_name' keys
-
-    Raises:
-        LookupError: If the majors document file does not exist at the
-            configured path.
-        json.JSONDecodeError: If the majors document contains invalid JSON.
+            - 'metadata': Dict with major name and file_name
     """
 
     result = []

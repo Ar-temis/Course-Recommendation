@@ -1,5 +1,4 @@
 import sqlite3
-from pprint import pprint
 
 from crec.config import config
 from typing import Optional
@@ -116,7 +115,7 @@ def __retrieve_results(sql_query: str, inputs: tuple[str]) -> list[Schedule]:
 def schedule_retriever(
     # TODO: For now let's focus on one session at a time
     # session: Optional[str] = None,
-    subject: str,
+    subject_code: str,
     # TODO: Some numbers such as Chinese 101A has letters in them
     catalog_num: Optional[int] | Optional[list[int]] = None,
 ) -> str:
@@ -126,36 +125,31 @@ def schedule_retriever(
     Queries the database using subject code and optional catalog number.
 
     Args:
-        subject: Subject code (e.g., 'COMPSCI', 'MATH'). Must exist in SUBJECTS or be
-            rewritable to a valid subject.
-        catalog_num: Optional course catalog number. If provided, filters results
-            to a specific course. If None, retrieves all courses for the subject.
+        subject_code: Subject code (e.g., 'COMPSCI', 'MATH').
+        catalog_num: If provided, filters results to a specific course.
+            If None, retrieves all courses for the subject.
 
     Returns:
         Query results containing course schedule information including session,
         catalog number, section, course name, time slots, scheduled days, and credits.
-
-    Raises:
-        LookupError: If the subject cannot be matched to any valid subject in SUBJECTS.
-        ValueError: If the subject argument is missing.
     """
     # TODO: Put in available subjects in the docstring
 
-    logger.info(f"Subject: {subject}, Codes: {catalog_num}")
+    logger.info(f"Subject: {subject_code}, Codes: {catalog_num}")
 
     sql_query = ""
     inputs = None
 
-    if not (subject is None or subject in SUBJECTS):
+    if not (subject_code is None or subject_code in SUBJECTS):
         logger.info("Predicting subject")
         subject_rewriter = dspy.Predict(subject_rewriter_signature)
-        result = subject_rewriter(possible_subjects=SUBJECTS, candidate=subject)
+        result = subject_rewriter(possible_subjects=SUBJECTS, candidate=subject_code)
         logger.info(f"Predicted Subject: {result}")
         if result == "None":
-            msg = f"{subject} does not exist in the schedule db."
+            msg = f"{subject_code} does not exist in the schedule db."
             return LookupError(msg)
 
-    if subject and catalog_num:
+    if subject_code and catalog_num:
         if isinstance(catalog_num, int):
             catalog_num = [catalog_num]
 
@@ -167,16 +161,16 @@ def schedule_retriever(
             WHERE subject = ?
             AND catalog_num IN ({placeholders})
         """
-        inputs = (subject, *catalog_num)
+        inputs = (subject_code, *catalog_num)
 
-    elif subject and (catalog_num is None):
+    elif subject_code and (catalog_num is None):
         sql_query = """
             SELECT id, session, subject, catalog_num, section,
             course_name, start_time, end_time, scheduled_days, credits
             FROM spring_schedule
             WHERE subject = ?
         """
-        inputs = (subject,)
+        inputs = (subject_code,)
     else:
         # Even though subject is required above
         # This is for safety i guess
@@ -186,6 +180,3 @@ def schedule_retriever(
     results = __retrieve_results(sql_query, inputs)
     logger.info(f"Retrieved results: {results}")
     return results
-
-
-pprint(schedule_retriever("COMPSCI"))

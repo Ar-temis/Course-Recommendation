@@ -34,7 +34,8 @@ dependencies = [
   "lxml",
   "bs4",
   "thefuzz",
-  "pypdf"
+  "pypdf",
+  "mlflow >= 2.18.0"
 ]
 
 [project.urls]
