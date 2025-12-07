@@ -44,7 +44,7 @@ Issues = "https://github.com/Ar-temis/course-recommendation/issues"
 Source = "https://github.com/Ar-temis/course-recommendation"
 
 [tool.hatch.version]
-path = "src/crec/__about__.py"
+path = "crec/__about__.py"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
@@ -62,7 +62,7 @@ omit = [
 ]
 
 [tool.coverage.paths]
-course_recommendation = ["src/crec"]
+course_recommendation = ["crec"]
 tests = ["tests", "*/course-recommendation/tests"]
 
 [tool.coverage.report]
