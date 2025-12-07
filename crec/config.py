@@ -66,6 +66,7 @@ class Config:
                 # SQLite
                 "schedule_db": str(db_dir.joinpath("schedule.db")),
                 # Mem0 config
+                "mem_chroma": str(db_dir.joinpath("chroma_memory")),
                 "mem_col": "test",
             }
         )

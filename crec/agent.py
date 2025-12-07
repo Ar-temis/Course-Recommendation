@@ -66,7 +66,7 @@ class Agent(dspy.Module):
                 "provider": "chroma",
                 "config": {
                     "collection_name": config.mem_col,
-                    "path": config.chroma_path,
+                    "path": config.mem_chroma,
                 },
             },
             "embedder": {
@@ -127,7 +127,6 @@ class Agent(dspy.Module):
 
         synthesizer_args = {
             "conversation_memory": self.conversation_memory,
-            "agent_trajectory": intermediate_result.trajectory,
             "agent_reasoning": intermediate_result.reasoning,
             "agent_output": intermediate_result.result,
             "current_user_message": user_query,

@@ -38,7 +38,6 @@ class SynthesizerSignature(dspy.Signature):
         format=lambda x: x,
     )
 
-    agent_trajectory: str = dspy.InputField()
     agent_reasoning: str = dspy.InputField()
     agent_output: str = dspy.InputField()
     current_date: date = dspy.InputField()
@@ -55,7 +54,6 @@ class Synthesizer(dspy.Module):
         self,
         current_user_message: str,
         conversation_memory: ConversationMemory,
-        agent_trajectory: str,
         agent_reasoning: str,
         agent_output: str,
         streaming: bool,
@@ -64,7 +62,6 @@ class Synthesizer(dspy.Module):
         synthesizer_args = dict(
             current_user_message=current_user_message,
             conversation_history=conversation_memory.history_str(),
-            agent_trajectory=agent_trajectory,
             agent_reasoning=agent_reasoning,
             agent_output=agent_output,
         )
