@@ -10,6 +10,12 @@ def init_db(DB_PATH):
 
     c.execute(
         """
+        DROP TABLE IF EXISTS spring_schedule;
+    """
+    )
+
+    c.execute(
+        """
     CREATE TABLE IF NOT EXISTS spring_schedule (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         session TEXT NOT NULL,
@@ -73,6 +79,6 @@ def load_csv_into_db(db_path: str, csv_path: str):
 
 
 if __name__ == "__main__":
-    csv_path = "/home/artemis/Developer/Course-Recommendation/data/CLASS_SCHEDULE_Session 3_Spring 2026.csv"
+    csv_path = "/home/artemis/Developer/Course-Recommendation/data/class_schedule_session_3_spring_2026.csv"
     init_db(config.schedule_db)
-    load_csv_into_db(config.schedule_path, csv_path)
+    load_csv_into_db(config.schedule_db, csv_path)

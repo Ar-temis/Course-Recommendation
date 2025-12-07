@@ -99,3 +99,6 @@ def course_retriever(course_queries: list[str]) -> list[dict]:
         )
         result.extend(chroma_result_to_nodes(chroma_result))
     return result
+
+
+__import__("pprint").pprint(course_retriever(["available courses"]))

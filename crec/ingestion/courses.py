@@ -69,6 +69,10 @@ def pipeline(folder: Path | str):
     paths = sanitize_directory(folder)
     client = chromadb.PersistentClient(path=config.chroma_path)
 
+    for col in client.list_collections():
+        if col.name == config.courses_col:
+            print("Courses collection exists. Deleting.")
+            client.delete_collection(config.courses_col)
     collection = client.get_or_create_collection(
         name=config.courses_col,
         embedding_function=OllamaEmbeddingFunction(model_name=config.embedding),

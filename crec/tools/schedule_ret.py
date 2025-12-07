@@ -159,7 +159,7 @@ def schedule_retriever(
             course_name, start_time, end_time, scheduled_days, credits
             FROM spring_schedule
             WHERE subject = ?
-            AND catalog_num IN ({placeholders})
+            AND catalog_num IN ({placeholders});
         """
         inputs = (subject_code, *catalog_num)
 
@@ -168,7 +168,7 @@ def schedule_retriever(
             SELECT id, session, subject, catalog_num, section,
             course_name, start_time, end_time, scheduled_days, credits
             FROM spring_schedule
-            WHERE subject = ?
+            WHERE subject = ?;
         """
         inputs = (subject_code,)
     else:

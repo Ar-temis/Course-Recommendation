@@ -141,7 +141,7 @@ def reader_worker(html_paths: str, buffer: Queue):
 
 
 # Embedding worker: Embeds split HTMLs and writes to JSON
-def embed_worker(buffer: Queue, output_json_path: str = "output.json"):
+def embed_worker(buffer: Queue, output_json_path: str = "majors.json"):
     # Load existing JSON if it exists
     if os.path.exists(output_json_path):
         with open(output_json_path, "r", encoding="utf-8") as f:
@@ -187,7 +187,7 @@ def embed_worker(buffer: Queue, output_json_path: str = "output.json"):
 
 
 # Main function
-def pipeline(folder: str, output_json: str = "output.json") -> None:
+def pipeline(folder: str, output_json: str = "majors.json") -> None:
     """Reader, writer pipeline using threading"""
 
     paths = sanitize_directory(folder)

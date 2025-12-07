@@ -35,7 +35,8 @@ dependencies = [
   "bs4",
   "thefuzz",
   "pypdf",
-  "mlflow >= 2.18.0"
+  "mlflow >= 2.18.0",
+  "mem0ai"
 ]
 
 [project.urls]

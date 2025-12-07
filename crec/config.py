@@ -42,15 +42,15 @@ class Config:
 
     # Internal: initialize defaults once
     def _initialize_defaults(self):
-        db_dir = Path(__file__).parent.parent.parent.joinpath("dbs/")
-        data_dir = Path(__file__).parent.parent.parent.joinpath("data/")
+        db_dir = Path(__file__).parent.parent.joinpath("dbs/")
+        data_dir = Path(__file__).parent.parent.joinpath("data/")
         self._store.update(
             {
                 # Core
-                "llm": "ollama_chat/qwen3:8b",
+                "llm": "qwen3:8b",
                 "llm_url": "http://localhost:11434",
                 "llm_api_key": "",
-                "llm_temperature": 1,
+                "llm_temperature": 0.7,
                 "embedding": "embeddinggemma",
                 "tei_url": "http://localhost:46515",
                 "context_window": 8000,
@@ -65,6 +65,8 @@ class Config:
                 "courses_col": "courses",
                 # SQLite
                 "schedule_db": str(db_dir.joinpath("schedule.db")),
+                # Mem0 config
+                "mem_col": "test",
             }
         )
         # refresh read-only view

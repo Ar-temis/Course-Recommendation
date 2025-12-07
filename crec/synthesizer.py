@@ -2,7 +2,6 @@ import dspy
 
 from crec.conversation_memory import ConversationMemory
 
-from crec.config import config
 
 from datetime import date
 
@@ -34,10 +33,7 @@ class SynthesizerSignature(dspy.Signature):
 
     conversation_history: str = dspy.InputField(
         desc=(
-            "Previous conversation between user and you, the assistant, in JSON Lines format. "
-            "Each line specifies the role and content of the message. "
-            "The Current User Message is a continuation of this conversation. "
-            "It would be empty if there were no previous conversation."
+            "Current ongoing conversation between user and you, the assistant, in JSON Lines format."
         ),
         format=lambda x: x,
     )
@@ -48,33 +44,6 @@ class SynthesizerSignature(dspy.Signature):
     current_date: date = dspy.InputField()
     current_user_message: str = dspy.InputField()
     response: str = dspy.OutputField()
-
-
-class ResponseGen:
-    """A generator that uses the DSPY streamify."""
-
-    def __init__(
-        self,
-        streamer,
-    ):
-        self.llm_completion_gen = streamer
-        self.full_response = ""
-
-    def __iter__(self):
-        first_token = True
-        for chunk in self.llm_completion_gen:
-            if isinstance(chunk, dspy.streaming.StreamResponse):
-                first_token = False
-                yield chunk.chunk
-
-            if isinstance(chunk, dspy.Prediction):
-                self.full_response = chunk.response
-                if first_token:
-                    yield chunk.response
-
-    def get_full_response(self) -> str:
-        # Make sure the entire response is read
-        return self.full_response
 
 
 class Synthesizer(dspy.Module):
@@ -109,13 +78,7 @@ class Synthesizer(dspy.Module):
                 ],
                 async_streaming=False,
             )
-            if hasattr(config, "tracer"):
-                response_gen = ResponseGen(
-                    synthesizer_streamer(**synthesizer_args),
-                )
-
-            else:
-                response_gen = ResponseGen(synthesizer_streamer(**synthesizer_args))
+            response_gen = synthesizer_streamer(**synthesizer_args)
             return dspy.Prediction(response=response_gen)
 
         else:

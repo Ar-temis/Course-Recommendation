@@ -2,7 +2,7 @@ import time
 
 import dspy
 import mlflow
-from crec.conversation_memory import ConversationMemory
+from crec.conversation_memory import MemoryTools, ConversationMemory
 from crec.tools.course_ret import course_retriever
 from crec.tools.major_ret import major_retriever
 from crec.tools.schedule_ret import schedule_retriever
@@ -33,7 +33,9 @@ class Agent_Signature(dspy.Signature):
     """
 
     user_query: str = dspy.InputField()
-    conversation_history: str = dspy.InputField()
+    conversation_history: str = dspy.InputField(
+        desc="Current ongoing conversation history."
+    )
     result: str = dspy.OutputField()
 
 
@@ -52,14 +54,35 @@ class Agent(dspy.Module):
             streaming: If `True`, returns the LLM response as a streaming generator
                 for `reponse` returned by synthesizer, else simply return the
                 complete response as a string.
-            get_itermediate: If `True`, `forward()` would return the synthesized
-                result for each agent iteration as a generator.
             previous_conversation: List of User-Assistant conversation retrieved from the database.
         """
 
         super().__init__()
         self.streaming = streaming
         self.prev_response = None
+
+        memory_config = {
+            "vector_store": {
+                "provider": "chroma",
+                "config": {
+                    "collection_name": config.mem_col,
+                    "path": config.chroma_path,
+                },
+            },
+            "embedder": {
+                "provider": "ollama",
+                "config": {"model": config.embedding},
+            },
+            "llm": {
+                "provider": "ollama",
+                "config": {
+                    "model": config.llm,
+                    "temperature": 0.1,
+                    "max_tokens": 2500,
+                },
+            },
+        }
+        self.memory_tools = MemoryTools(memory_config)
         self.conversation_memory = ConversationMemory()
 
         # TODO: Conversation history
@@ -67,9 +90,13 @@ class Agent(dspy.Module):
             if previous_conversation:
                 for conversation in previous_conversation:
                     user, bot = conversation[0], conversation[1]
-                    self.conversation_memory.register_history(role="user", content=user)
-                    self.conversation_memory.register_history(
-                        role="assistant", content=bot
+                    self.conversation_memory.save(
+                        role="user",
+                        content=user,
+                    )
+                    self.conversation_memory.save(
+                        role="assistant",
+                        content=bot,
                     )
         except Exception as e:
             print(f"error encountered in loading conversation: {e}")
@@ -77,6 +104,8 @@ class Agent(dspy.Module):
         self.agent = dspy.ReAct(
             signature=Agent_Signature,
             tools=[
+                self.memory_tools.search_memories,
+                self.memory_tools.get_all_memories,
                 course_retriever,
                 major_retriever,
                 schedule_retriever,
@@ -91,19 +120,6 @@ class Agent(dspy.Module):
         self.conversation_memory = ConversationMemory()
 
     def _forward(self, user_query: str):
-        # Add previous response to conversation memory
-        if self.prev_response is not None:
-            if self.streaming:
-                # Note that this would essentially "invalidate" the previous response generator
-                # as calling `get_full_response()` would exhaust the iterations.
-                r = self.prev_response.get_full_response()
-            else:
-                r = self.prev_response
-            self.conversation_memory(
-                role="assistant",
-                content=r,
-            )
-
         history = self.conversation_memory.history_str()
         intermediate_result = self.agent(
             user_query=user_query, conversation_history=history
@@ -118,9 +134,9 @@ class Agent(dspy.Module):
             "streaming": self.streaming,
         }
 
-        response = self.synthesizer(**synthesizer_args)
+        self.prev_response = self.synthesizer(**synthesizer_args)
 
-        yield dspy.Prediction(response)
+        return self.prev_response
 
     def forward(self, user_query: str):
 
@@ -128,8 +144,35 @@ class Agent(dspy.Module):
             user_query,
         )
 
-        for i in gen:
-            return i
+        response = None
+
+        if self.streaming:
+            for chunk in gen.response:
+                if isinstance(chunk, dspy.streaming.StreamResponse):
+                    yield chunk.chunk
+
+                if isinstance(chunk, dspy.Prediction):
+                    response = chunk.response
+        else:
+            response = gen.response
+            yield response
+
+        self.conversation_memory.save(
+            role="user",
+            content=user_query,
+        )
+        self.conversation_memory.save(
+            role="assistant",
+            content=response,
+        )
+
+        self.memory_tools.store_memory(
+            [
+                {"role": "user", "content": user_query},
+                {"role": "assistant", "content": response},
+            ]
+        )
+        return dspy.Prediction(response)
 
 
 def main():
@@ -140,7 +183,7 @@ def main():
     mlflow.dspy.autolog()
 
     lm = dspy.LM(
-        model=config.llm,
+        model="ollama_chat/" + config.llm,
         api_base=config.llm_url,
         api_key=config.llm_api_key,
         max_tokens=config.context_window,
@@ -169,7 +212,7 @@ def main():
             )
             first_token = True
             print("Response:")
-            for r in responses_gen.response:
+            for r in responses_gen:
                 if first_token:
                     end_time = time.time()
                     print(f"Response delay:{end_time - start_time}")
