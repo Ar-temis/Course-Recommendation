@@ -9,7 +9,7 @@ cd Course-Recommendation
 
 I recommend making a virtual environment and downloading the dependencies.
 
-!> [!NOTE]
+> [!NOTE]
 > Every command here is executed in the project root folder.
 
 I have used `uv` for this and I recommend using `uv` to install everything.
