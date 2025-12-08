@@ -32,6 +32,7 @@ python3 crec/agent.py
 
 ## Video Links
 **Primary Demo:** https://youtu.be/8glZdfNl_Uk 
+**Technical Demo:** https://youtu.be/U8BUoQR8Gho
 
 ## Documentation
 **WIP**
