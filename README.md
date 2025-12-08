@@ -12,7 +12,7 @@ Finally, you have to schedule them, and if they don't match you find yourself ba
 So, what if there was an assistant that just gives you all the available options and you choose from there? 
 That's what my AI assistant is ***exactly*** doing for you.
 
-This assistant can:
+**This assistant can:**
 - Find major requirements
 - Recommend majors
 - Find course prerequisites
