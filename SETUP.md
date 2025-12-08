@@ -105,6 +105,8 @@ https://github.com/Ar-temis/Course-Recommendation/blob/0c03bfcd448c4d0ebcdf9a059
 
 ## 3. Downloading necessary data
 
+I have chosen to upload the data necessary to box instead of my repo because it has sensitive information that should not be published to the internet.
+
 Download the data necessary from this [link](https://duke.box.com/s/0db37aeh6ott2wiaq2wdfyc4m2t7rt9x). 
 Once downloaded, put it in the project root folder so that the structure looks like this:
 ```

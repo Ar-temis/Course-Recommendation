@@ -1,13 +1,12 @@
 # Course-Recommendation
+Course-Recommendation is a chatbot designed to help you choose majors and courses.
 <img width="1244" height="1157" alt="image" src="https://github.com/user-attachments/assets/cab8b08e-a4ed-491f-acbe-1fe13a9b1420" />
 
 **Setup:** [SETUP.md](https://github.com/Ar-temis/Course-Recommendation/blob/main/SETUP.md) 
 
 ## What it does
-Course-Recommendation is a chatbot designed to help you choose majors and courses.
 
 As a student you have to find what courses are available, which ones go together, and which ones you need for you major. 
-
 Finally, you have to schedule them, and if they don't match you find yourself back at square one.
 
 So, what if there was an assistant that just gives you all the available options and you choose from there? 
@@ -22,34 +21,18 @@ That's what my AI assistant is ***exactly*** doing for you.
 ## Quickstart
 **Please go to [SETUP.md](https://github.com/Ar-temis/Course-Recommendation/blob/main/SETUP.md)** 
 
-Here is a list of commands for a quickstart:
+In the project root folder, after setting up, you can run the app using:
 ```bash
-git clone https://github.com/Ar-temis/Course-Recommendation.git
-cd Course-Recommendation
-
-pip install uv
-uv venv --python 3.11
-source .venv/bin/activate
-uv sync
-```
-
-> [!IMPORTANT]
-> Remember you still need to install [ollama](https://ollama.com/download) and the data necessary from [here](https://duke.box.com/s/0db37aeh6ott2wiaq2wdfyc4m2t7rt9x) .
-
-**Setup data directory:**
-```
-python3 crec/setup.py
-```
-
-## Usage
-In the project root folder, run the application full-stack with:
-
-```bash
+# For frontend app
 flask run
+
+#Just for terminal chatting without any frontend:
+python3 crec/agent.py
 ```
+
+## Video Links
+**Primary Demo:** https://youtu.be/8glZdfNl_Uk 
 
 ## Documentation
 **WIP**
 
-## Video Links
-**Primary Demo:** https://youtu.be/8glZdfNl_Uk 
