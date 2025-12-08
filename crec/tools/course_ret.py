@@ -79,18 +79,16 @@ def course_retriever(course_queries: list[str]) -> list[dict]:
     result = []
     # If all queries are course codes, use metadata filtering
     if course_codes:
-        if len(course_codes) == 1:
-            where_filter = {"course_code": course_codes[0]}
-        else:
-            where_filter = {"$or": [{"course_code": code} for code in course_codes]}
+        for course_code in course_codes:
+            where_filter = {"course_code": course_code}
 
-        chroma_result = collection.query(
-            query_texts=course_codes,
-            n_results=1,
-            where=where_filter,
-        )
+            chroma_result = collection.query(
+                query_texts=course_code,
+                n_results=1,
+                where=where_filter,
+            )
 
-        result.extend(chroma_result_to_nodes(chroma_result))
+            result.extend(chroma_result_to_nodes(chroma_result))
 
     if text_queries:
         chroma_result = collection.query(

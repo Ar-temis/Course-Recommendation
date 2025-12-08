@@ -77,6 +77,8 @@ body {
     width: 38px;
     padding: 6px;
     fill: #fff;
+    flex-shrink: 0;
+
 
     background: #4f7cff;
     border-radius: 50%;
@@ -91,6 +93,9 @@ body {
     border-radius: 16px 16px 16px 4px;
     font-size: 0.95rem;
     color: #2a2d42;
+    max-width: 85%;
+    word-wrap: break-word;
+    word-break: break-word;
 
     box-shadow: 0 2px 6px rgba(98,105,168,0.12);
 }
@@ -107,6 +112,9 @@ body {
     padding: 14px 18px;
     border-radius: 16px 16px 4px 16px;
     font-size: 0.95rem;
+    max-width: 85%;
+    word-wrap: break-word;
+    word-break: break-word;
 
     box-shadow: 0 3px 10px rgba(79,124,255,0.35);
 }
@@ -180,6 +188,17 @@ body {
     padding: 14px 18px;
     font-size: 0.95rem;
     color: #2a2d42;
+}
+
+/* INPUT DISABLING */
+.input.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#send-message.disabled {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 /* SEND BUTTON */

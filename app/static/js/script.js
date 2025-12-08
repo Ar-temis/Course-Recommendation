@@ -13,6 +13,19 @@ const createMessageElement = (content, ...classes) => {
     return div;
 };
 
+function disableUserInput() {
+    messageInput.classList.add("disabled");
+    sendMessageButton.classList.add("disabled");
+    messageInput.disabled = true;
+}
+
+function enableUserInput() {
+    messageInput.classList.remove("disabled");
+    sendMessageButton.classList.remove("disabled");
+    messageInput.disabled = false;
+    messageInput.focus();
+}
+
 // ----------------------------------------------------
 // STREAMING BOT RESPONSE
 // ----------------------------------------------------
@@ -56,6 +69,8 @@ const generateBotResponse = async (incomingMessageDiv) => {
         // Auto-scroll
         chatBody.scrollTop = chatBody.scrollHeight;
     }
+    // Done streaming → unlock input
+    enableUserInput();
 };
 
 // ----------------------------------------------------
@@ -63,6 +78,12 @@ const generateBotResponse = async (incomingMessageDiv) => {
 // ----------------------------------------------------
 const HandleOutgoingMessage = (e) => {
     e.preventDefault();
+
+    // Ignore if already disabled (prevents spam)
+    if (messageInput.disabled) return;
+
+    // Lock UI while waiting for model response
+    disableUserInput();
 
     userData.message = messageInput.value.trim();
     if (!userData.message) return;

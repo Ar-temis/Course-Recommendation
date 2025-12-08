@@ -1,9 +1,14 @@
-from flask import Flask
-
-from .app import bp as app_bp
 import socket
 import threading
 import subprocess
+
+import dspy
+import mlflow
+from crec.config import config
+from crec.agent import Agent
+from flask import Flask
+
+from .app import bp as app_bp
 
 
 def start_mlflow_server():
@@ -17,7 +22,7 @@ def start_mlflow_server():
         "--host",
         "0.0.0.0",
         "--port",
-        "5000",
+        "8889",
     ]
 
     # Start MLflow server as a background process
@@ -48,6 +53,25 @@ def create_app():
         static_folder="static",
         static_url_path="/",
     )
+
+    mlflow.set_tracking_uri("http://127.0.0.1:8889")
+    mlflow.set_experiment("Testing")
+    mlflow.dspy.autolog()
+
+    lm = dspy.LM(
+        model="ollama_chat/" + config.llm,
+        api_base=config.llm_url,
+        api_key=config.llm_api_key,
+        max_tokens=config.context_window,
+        temperature=config.llm_temperature,
+    )
+    dspy.configure(lm=lm)
+
+    agent = Agent(
+        max_iterations=5,
+        streaming=True,
+    )
+    app.agent = agent
 
     app.register_blueprint(app_bp)
 

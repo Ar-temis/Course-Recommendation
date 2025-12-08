@@ -36,7 +36,7 @@ class Agent_Signature(dspy.Signature):
     conversation_history: str = dspy.InputField(
         desc="Current ongoing conversation history."
     )
-    result: str = dspy.OutputField()
+    response: str = dspy.OutputField()
 
 
 class Agent(dspy.Module):
@@ -121,14 +121,36 @@ class Agent(dspy.Module):
 
     def _forward(self, user_query: str):
         history = self.conversation_memory.history_str()
+        # if self.streaming:
+        #     react_streamer = dspy.streamify(
+        #         program=self.agent,
+        #         stream_listeners=[
+        #             dspy.streaming.StreamListener(signature_field_name="response")
+        #         ],
+        #         async_streaming=False,
+        #     )
+        #     response_gen = react_streamer(
+        #         user_query=user_query,
+        #         conversation_history=history,
+        #     )
+        #     return dspy.Prediction(response=response_gen)
+        #
+        # else:
+        #     response = self.react(
+        #         user_query=user_query,
+        #         conversation_history=history,
+        #     ).response
+        #     return dspy.Prediction(response=response)
+
         intermediate_result = self.agent(
             user_query=user_query, conversation_history=history
         )
 
         synthesizer_args = {
             "conversation_memory": self.conversation_memory,
+            "agent_trajectory": intermediate_result.trajectory,
             "agent_reasoning": intermediate_result.reasoning,
-            "agent_output": intermediate_result.result,
+            "agent_output": intermediate_result.response,
             "current_user_message": user_query,
             "streaming": self.streaming,
         }
@@ -143,15 +165,20 @@ class Agent(dspy.Module):
             user_query,
         )
 
-        response = None
+        response = ""
 
         if self.streaming:
+            first_token = True
             for chunk in gen.response:
                 if isinstance(chunk, dspy.streaming.StreamResponse):
+                    first_token = False
+                    # response += chunk.chunk
                     yield chunk.chunk
 
-                if isinstance(chunk, dspy.Prediction):
+                elif isinstance(chunk, dspy.Prediction):
                     response = chunk.response
+                    if first_token:
+                        yield response
         else:
             response = gen.response
             yield response
@@ -176,7 +203,7 @@ class Agent(dspy.Module):
 
 def main():
     # Tell MLflow about the server URI.
-    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    mlflow.set_tracking_uri("http://127.0.0.1:8889")
     # Create a unique name for your experiment.
     mlflow.set_experiment("Testing")
     mlflow.dspy.autolog()
@@ -185,7 +212,7 @@ def main():
         model="ollama_chat/" + config.llm,
         api_base=config.llm_url,
         api_key=config.llm_api_key,
-        max_tokens=config.context_window,
+        max_tokens=4000,
         temperature=config.llm_temperature,
     )
     dspy.configure(lm=lm)

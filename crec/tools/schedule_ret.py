@@ -138,16 +138,16 @@ def schedule_retriever(
     """
     # TODO: Put in available subjects in the docstring
 
-    logger.info(f"Subject: {subject_code}, Codes: {catalog_num}")
+    log.info(f"Subject: {subject_code}, Codes: {catalog_num}")
 
     sql_query = ""
     inputs = None
 
     if not (subject_code is None or subject_code in SUBJECTS):
-        logger.info("Predicting subject")
+        log.info("Predicting subject")
         subject_rewriter = dspy.Predict(subject_rewriter_signature)
         result = subject_rewriter(possible_subjects=SUBJECTS, candidate=subject_code)
-        logger.info(f"Predicted Subject: {result}")
+        log.info(f"Predicted Subject: {result}")
         if result == "None":
             msg = f"{subject_code} does not exist in the schedule db."
             return LookupError(msg)
@@ -181,5 +181,5 @@ def schedule_retriever(
         return ValueError(msg)
 
     results = __retrieve_results(sql_query, inputs)
-    logger.info(f"Retrieved results: {results}")
+    log.info(f"Retrieved results: {results}")
     return results

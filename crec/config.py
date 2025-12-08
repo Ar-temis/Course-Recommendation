@@ -50,7 +50,7 @@ class Config:
                 "llm": "qwen3:8b",
                 "llm_url": "http://localhost:11434",
                 "llm_api_key": "",
-                "llm_temperature": 0.7,
+                "llm_temperature": 0.9,
                 "embedding": "embeddinggemma",
                 "tei_url": "http://localhost:46515",
                 "context_window": 8000,
