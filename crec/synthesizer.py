@@ -48,7 +48,7 @@ class SynthesizerSignature(dspy.Signature):
 class Synthesizer(dspy.Module):
     def __init__(self):
         super().__init__()
-        self.synthesizer = dspy.Predict(SynthesizerSignature)
+        self.synthesizer = dspy.ChainOfThought(SynthesizerSignature)
 
     def forward(
         self,
