@@ -39,9 +39,9 @@ uv sync
 The other major dependency you need to install is **Ollama**.
 Please look into their [download page](https://ollama.com/download) for instructions.
 
-Right now, I am using [Qwen3:8b](https://huggingface.co/Qwen/Qwen3-8B) as my LLM and [embeddinggemma](https://huggingface.co/google/embeddinggemma-300m) as my embedding model.
+Right now, I am using [gpt-oss:20b](https://ollama.com/library/gpt-oss) as my LLM in the cloud and [embeddinggemma](https://huggingface.co/google/embeddinggemma-300m) as my embedding model.
 
-I ran these two models on my laptop with the following specs:
+I ran the embedding model on my laptop with the following specs:
 ```bash
 > fastfetch
              .',;::::;,'.                 artemis@fedora
