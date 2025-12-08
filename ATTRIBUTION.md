@@ -48,7 +48,7 @@ This project uses the following third-party resources:
 
   Author: **ant1fact**  
 
-  Retrieved: 2025-12-06  
+  Retrieved: 2025-12-02  
   License: **CC BY-SA 4.0**  
   Used in:  
   https://github.com/Ar-temis/Course-Recommendation/blob/80d096f477585f9618c20f48dcd808ed4da1a838/crec/tools/schedule_ret.py#L112
