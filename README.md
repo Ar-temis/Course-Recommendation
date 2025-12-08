@@ -23,10 +23,10 @@ That's what my AI assistant is ***exactly*** doing for you.
 
 In the project root folder, after setting up, you can run the app using:
 ```bash
-# For frontend app
+# For frontend app:
 flask run
 
-#Just for terminal chatting without any frontend:
+# Just for terminal chatting without any frontend:
 python3 crec/agent.py
 ```
 
