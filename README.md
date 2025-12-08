@@ -1,4 +1,5 @@
 # Course-Recommendation
+<img width="1244" height="1157" alt="image" src="https://github.com/user-attachments/assets/cab8b08e-a4ed-491f-acbe-1fe13a9b1420" />
 
 **Setup:** [SETUP.md](https://github.com/Ar-temis/Course-Recommendation/blob/main/SETUP.md) 
 
