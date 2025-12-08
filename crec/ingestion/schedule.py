@@ -2,6 +2,7 @@ import csv
 import sqlite3
 
 from crec.config import config
+from crec.ingestion.utils import sanitize_directory
 
 
 def init_db(DB_PATH):
@@ -36,6 +37,7 @@ def init_db(DB_PATH):
 
 
 def load_csv_into_db(db_path: str, csv_path: str):
+
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
@@ -78,7 +80,10 @@ def load_csv_into_db(db_path: str, csv_path: str):
     conn.close()
 
 
-if __name__ == "__main__":
-    csv_path = "/home/artemis/Developer/Course-Recommendation/data/class_schedule_session_3_spring_2026.csv"
+def pipeline(data_dir: str):
+    paths = sanitize_directory(data_dir)
+    for path in paths:
+        if path.endswith(".csv"):
+            csv_path = path
     init_db(config.schedule_db)
     load_csv_into_db(config.schedule_db, csv_path)

@@ -143,14 +143,15 @@ def reader_worker(html_paths: str, buffer: Queue):
 # Embedding worker: Embeds split HTMLs and writes to JSON
 def embed_worker(buffer: Queue, output_json_path: str = "majors.json"):
     # Load existing JSON if it exists
-    if os.path.exists(output_json_path):
-        with open(output_json_path, "r", encoding="utf-8") as f:
-            try:
-                json_data = json.load(f)
-            except json.JSONDecodeError:
-                json_data = {}
-    else:
-        json_data = {}
+    # if os.path.exists(output_json_path):
+    #     with open(output_json_path, "r", encoding="utf-8") as f:
+    #         try:
+    #             json_data = json.load(f)
+    #         except json.JSONDecodeError:
+    #             json_data = {}
+    # else:
+    #     json_data = {}
+    json_data = {}
 
     while True:
         item = buffer.get()
@@ -208,11 +209,3 @@ def pipeline(folder: str, output_json: str = "majors.json") -> None:
     embed_thread.join()
 
     log.info("Done!")
-
-
-pipeline("/home/artemis/Developer/Course-Recommendation/data/")
-# if __name__ == "__main__":
-#     if len(sys.argv) > 1:
-#         pipeline(sys.argv[1])
-#     else:
-#         print("Error: Target folder not set. Append it after when calling this script.")

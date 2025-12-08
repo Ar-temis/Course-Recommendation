@@ -14,10 +14,11 @@ class MemoryTools:
         self,
         content: list[dict[str, str]],
         user_id: str = "default_user",
+        infer: bool = False,
     ) -> str:
         """Store information in memory."""
         try:
-            self.memory.add(content, user_id=user_id)
+            self.memory.add(content, user_id=user_id, infer=infer)
             return f"Stored memory: {content}"
         except Exception as e:
             return f"Error storing memory: {str(e)}"

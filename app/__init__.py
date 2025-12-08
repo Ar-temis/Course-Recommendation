@@ -11,7 +11,7 @@ def start_mlflow_server():
         "mlflow",
         "server",
         "--backend-store-uri",
-        "sqlite:///mydb.sqlite",
+        "sqlite:///dbs/mydb.sqlite",
         "--default-artifact-root",
         "./mlruns",
         "--host",

@@ -79,3 +79,31 @@ If you want to use smaller models, you can look through this [website](https://o
 You can change models in this file, in here:
 
 https://github.com/Ar-temis/Course-Recommendation/blob/c4bc7df1ca22373625c5671874f4085159a5d077/crec/config.py#L48-L56
+
+## 3. Downloading necessary data
+
+Download the data necessary from this [link](https://duke.box.com/s/0db37aeh6ott2wiaq2wdfyc4m2t7rt9x). 
+Once downloaded, put it in the project root folder so that the structure looks like this:
+```
+Course-Recommendation
+├── app
+├── crec
+├── data
+├── dbs
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── SETUP.md
+└── tests
+```
+
+## 4. Running the installation script
+
+You can run the installation script with:
+```bash
+python3 crec/setup.py
+```
+---
+
+# Congratulations
+You have set up all the necessary dependencies for this project. Head on back to [README](https://github.com/Ar-temis/Course-Recommendation/tree/main#readme) for instructions on running this project. 

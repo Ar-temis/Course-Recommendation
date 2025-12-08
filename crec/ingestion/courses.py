@@ -8,7 +8,16 @@ import chromadb
 from chromadb.utils.embedding_functions.ollama_embedding_function import (
     OllamaEmbeddingFunction,
 )
-from utils import sanitize_directory
+from crec.ingestion.utils import sanitize_directory
+
+# import logging
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format="%(asctime)s [%(levelname)s] %(message)s",
+# )
+#
+# log = logging.getLogger(__file__)
+# log.setLevel(logging.INFO)
 
 
 def parse_course_descriptions(pdf_path):
@@ -71,7 +80,7 @@ def pipeline(folder: Path | str):
 
     for col in client.list_collections():
         if col.name == config.courses_col:
-            print("Courses collection exists. Deleting.")
+            logging.info("Courses collection exists. Deleting.")
             client.delete_collection(config.courses_col)
     collection = client.get_or_create_collection(
         name=config.courses_col,
@@ -103,6 +112,3 @@ def pipeline(folder: Path | str):
                     }
                 ],
             )
-
-
-pipeline("/home/artemis/Developer/Course-Recommendation/data/")

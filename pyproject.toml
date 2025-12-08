@@ -36,7 +36,8 @@ dependencies = [
   "thefuzz",
   "pypdf",
   "mlflow >= 2.18.0",
-  "mem0ai"
+  "mem0ai",
+  "flask"
 ]
 
 [project.urls]

@@ -6,10 +6,13 @@ import dspy
 from pydantic import BaseModel
 import logging
 
-logger = logging.getLogger(__file__)
 logging.basicConfig(
-    level=logging.INFO, format="[%(asctime)s] %(levelname)s - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
 )
+
+log = logging.getLogger(__file__)
+log.setLevel(logging.INFO)
 
 
 class Schedule(BaseModel):
