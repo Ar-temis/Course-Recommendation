@@ -41,6 +41,28 @@ Please look into their [download page](https://ollama.com/download) for instruct
 
 Right now, I am using [gpt-oss:20b](https://ollama.com/library/gpt-oss) as my LLM in the cloud and [embeddinggemma](https://huggingface.co/google/embeddinggemma-300m) as my embedding model.
 
+### GPT-OSS
+> [!IMPORTANT]
+> You have to create ollama account for gpt-oss to work. Please follow their [instructions](https://docs.ollama.com/cloud#python).
+
+Once you have created your API key, put it in the `.env` file at `Course-Recommendation/crec/.env`.
+
+It should look like so:
+```env
+API_KEY="{api_key without the curly brackets}"
+```
+
+Then, you should pull the `gpt-oss` model with:
+```bash
+ollama pull gpt-oss:20b-cloud
+```
+
+### embeddinggemma
+You should run the following command to install `embeddinggemma`:
+```bash
+ollama pull embeddinggemma:300m
+```
+
 I ran the embedding model on my laptop with the following specs:
 ```bash
 > fastfetch
@@ -75,10 +97,11 @@ ccccccccccccccccccccccccccccc:'.          Terminal: kitty 0.43.1
 
 ### Model Changing
 If you want to use smaller models, you can look through this [website](https://ollama.com/library). 
+Then, you should pull the model like we did for `embeddinggemma`above.
 
 You can change models in this file, in here:
 
-https://github.com/Ar-temis/Course-Recommendation/blob/c4bc7df1ca22373625c5671874f4085159a5d077/crec/config.py#L48-L56
+https://github.com/Ar-temis/Course-Recommendation/blob/0c03bfcd448c4d0ebcdf9a059b290c3e3381b4b2/crec/config.py#L50-L57
 
 ## 3. Downloading necessary data
 
