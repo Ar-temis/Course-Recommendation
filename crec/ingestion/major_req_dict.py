@@ -1,5 +1,4 @@
 # Used to create a dictionary out of known major names
-import os
 import logging
 import json
 from queue import Queue
@@ -7,6 +6,8 @@ from threading import Thread
 from pathlib import Path
 
 from langchain_text_splitters import HTMLSemanticPreservingSplitter
+
+from crec.ingestion.utils import sanitize_directory
 
 logging.basicConfig(
     level=logging.INFO,
@@ -57,41 +58,6 @@ HEADER_4_FILTER = [
     "Quantitative Political Economy /Political Science",
     "Quantitative Political Economy /Public Policy",
 ]
-
-
-# Helper functions
-def sanitize(filename: str) -> str:
-    """Return lower cased whitespace replaced with (-) str.
-
-    Parameters
-        filename (str): Filename you want to sanitize
-
-    Returns
-        str: sanitized filename
-    """
-
-    temp = filename.lower().strip()
-    temp = temp.replace(" ", "_")
-    return temp
-
-
-def sanitize_directory(folder: str) -> list[str]:
-    folder_path = Path(folder)
-    sanitized_paths = []
-
-    for file_path in folder_path.iterdir():
-        if file_path.is_file():
-            new_name = sanitize(file_path.name)
-
-            # Only rename if necessary
-            if new_name != file_path.name:
-                new_path = file_path.with_name(new_name)
-                file_path.rename(new_path)
-                sanitized_paths.append(os.path.join(folder, new_name))
-            else:
-                sanitized_paths.append(os.path.join(folder, new_name))
-
-    return sanitized_paths
 
 
 # Reader worker: Parses HTMLs
