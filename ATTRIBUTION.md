@@ -43,7 +43,7 @@ This project uses the following third-party resources:
 ## Code Snippets & Tutorials
 
 - Code snippet adapted from the following StackOverflow post:  
-  https://stackoverflow.com/a/XXXXXXXX  
+  https://stackoverflow.com/a/76239183
   Author: **ant1fact**  
   Retrieved: 2025-12-06  
   License: **CC BY-SA 4.0**  
