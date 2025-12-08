@@ -52,4 +52,4 @@ flask run
 **WIP**
 
 ## Video Links
-**WIP** 
+**Primary Demo:** https://youtu.be/8glZdfNl_Uk 
