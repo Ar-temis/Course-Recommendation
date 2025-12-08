@@ -148,7 +148,6 @@ class Agent(dspy.Module):
 
         synthesizer_args = {
             "conversation_memory": self.conversation_memory,
-            "agent_trajectory": intermediate_result.trajectory,
             "agent_reasoning": intermediate_result.reasoning,
             "agent_output": intermediate_result.response,
             "current_user_message": user_query,

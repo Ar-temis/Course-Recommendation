@@ -44,12 +44,13 @@ class Config:
     def _initialize_defaults(self):
         db_dir = Path(__file__).parent.parent.joinpath("dbs/")
         data_dir = Path(__file__).parent.parent.joinpath("data/")
+        API_KEY = _env("API_KEY")
         self._store.update(
             {
                 # Core
-                "llm": "qwen3:8b",
+                "llm": "gpt-oss:20b-cloud",
                 "llm_url": "http://localhost:11434",
-                "llm_api_key": "",
+                "llm_api_key": API_KEY,
                 "llm_temperature": 0.9,
                 "embedding": "embeddinggemma",
                 "tei_url": "http://localhost:46515",
