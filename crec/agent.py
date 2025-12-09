@@ -10,7 +10,7 @@ from crec.config import config
 from crec.synthesizer import Synthesizer
 
 
-class Agent_Signature(dspy.Signature):
+class AgentSignature(dspy.Signature):
     """You are an university course planning agent that helps students choose their next semester courses.
 
     If you think the user's query is ambiguous, you are welcome finish tool calling
@@ -102,7 +102,7 @@ class Agent(dspy.Module):
             print(f"error encountered in loading conversation: {e}")
 
         self.agent = dspy.ReAct(
-            signature=Agent_Signature,
+            signature=AgentSignature,
             tools=[
                 self.memory_tools.search_memories,
                 self.memory_tools.get_all_memories,
@@ -159,7 +159,6 @@ class Agent(dspy.Module):
         return self.prev_response
 
     def forward(self, user_query: str):
-
         gen = self._forward(
             user_query,
         )
@@ -228,23 +227,20 @@ def main():
     )
 
     while True:
-        try:
-            print("*" * 10)
-            current_user_message = input("Enter your query: ")
-            start_time = time.time()
-            responses_gen = agent(
-                user_query=current_user_message,
-            )
-            first_token = True
-            print("Response:")
-            for r in responses_gen:
-                if first_token:
-                    end_time = time.time()
-                    print(f"Response delay:{end_time - start_time}")
-                    first_token = False
-                print(r, end="")
-        except EOFError:
-            break
+        print("*" * 10)
+        current_user_message = input("Enter your query: ")
+        start_time = time.time()
+        responses_gen = agent(
+            user_query=current_user_message,
+        )
+        first_token = True
+        print("Response:")
+        for r in responses_gen:
+            if first_token:
+                end_time = time.time()
+                print(f"Response delay:{end_time - start_time}")
+                first_token = False
+            print(r, end="")
 
 
 if __name__ == "__main__":

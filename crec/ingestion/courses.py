@@ -1,16 +1,18 @@
 import re
 import hashlib
+from tqdm import tqdm
 from pathlib import Path
-from pypdf import PdfReader
 
 from crec.config import config
 import chromadb
+from pypdf import PdfReader
+from chromadb.config import Settings
 from chromadb.utils.embedding_functions.ollama_embedding_function import (
     OllamaEmbeddingFunction,
 )
 from crec.ingestion.utils import sanitize_directory
 
-# import logging
+#
 # logging.basicConfig(
 #     level=logging.INFO,
 #     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -74,17 +76,20 @@ def parse_course_descriptions(pdf_path):
 
 
 def pipeline(folder: Path | str):
-
     paths = sanitize_directory(folder)
-    client = chromadb.PersistentClient(path=config.chroma_path)
+    client = chromadb.PersistentClient(
+        path=config.chroma_path, settings=Settings(anonymized_telemetry=False)
+    )
 
     for col in client.list_collections():
         if col.name == config.courses_col:
-            logging.info("Courses collection exists. Deleting.")
+            # log.info("Courses collection exists. Deleting.")
             client.delete_collection(config.courses_col)
     collection = client.get_or_create_collection(
         name=config.courses_col,
-        embedding_function=OllamaEmbeddingFunction(model_name=config.embedding),
+        embedding_function=OllamaEmbeddingFunction(
+            model_name=config.embedding,
+        ),
     )
     for file_path in paths:
         file_name = Path(file_path).name
@@ -95,8 +100,7 @@ def pipeline(folder: Path | str):
         print(f"Reading file: {file_name}")
 
         courses = parse_course_descriptions(file_path)
-        for course in courses:
-            print(f"Adding course: {course.get('course_code')}")
+        for course in tqdm(courses):
             text = str(course)
             id = hashlib.md5(text.encode()).hexdigest()
             reqs = course.get("prerequisites")

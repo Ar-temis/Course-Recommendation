@@ -1,5 +1,6 @@
 import csv
 import sqlite3
+from pathlib import Path
 
 from crec.config import config
 from crec.ingestion.utils import sanitize_directory
@@ -37,7 +38,6 @@ def init_db(DB_PATH):
 
 
 def load_csv_into_db(db_path: str, csv_path: str):
-
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
 
@@ -80,10 +80,14 @@ def load_csv_into_db(db_path: str, csv_path: str):
     conn.close()
 
 
-def pipeline(data_dir: str):
+def pipeline(data_dir: Path | str):
     paths = sanitize_directory(data_dir)
+    csv_path = None
     for path in paths:
         if path.endswith(".csv"):
             csv_path = path
+    if csv_path is None:
+        msg = "Schedule csv file was not found in data directory."
+        raise LookupError(msg)
     init_db(config.schedule_db)
     load_csv_into_db(config.schedule_db, csv_path)

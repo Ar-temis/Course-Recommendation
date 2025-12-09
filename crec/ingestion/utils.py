@@ -18,7 +18,7 @@ def sanitize(filename: str) -> str:
     return temp
 
 
-def sanitize_directory(folder: str) -> list[str]:
+def sanitize_directory(folder: str | Path) -> list[str]:
     folder_path = Path(folder)
     sanitized_paths = []
 

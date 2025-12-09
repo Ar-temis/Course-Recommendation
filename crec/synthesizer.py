@@ -58,7 +58,6 @@ class Synthesizer(dspy.Module):
         agent_output: str,
         streaming: bool,
     ):
-
         synthesizer_args = dict(
             current_user_message=current_user_message,
             conversation_history=conversation_memory.history_str(),

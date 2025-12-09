@@ -22,7 +22,6 @@ def chat():
 
     def generate():
         responses_gen = app.agent(user_query=user_query)
-        for chunk in responses_gen:
-            yield chunk  # Send piece by piece to client
+        yield from responses_gen  # Send piece by piece to client
 
     return Response(stream_with_context(generate()), mimetype="text/plain")

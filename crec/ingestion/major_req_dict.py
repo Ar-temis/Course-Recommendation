@@ -154,7 +154,7 @@ def embed_worker(buffer: Queue, output_json_path: str = "majors.json"):
 
 
 # Main function
-def pipeline(folder: str, output_json: str = "majors.json") -> None:
+def pipeline(folder: Path | str, output_json: str = "majors.json") -> None:
     """Reader, writer pipeline using threading"""
 
     paths = sanitize_directory(folder)

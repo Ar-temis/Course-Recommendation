@@ -8,7 +8,7 @@ logging.basicConfig(
 )
 
 log = logging.getLogger(__file__)
-log.setLevel(logging.INFO)
+# log.setLevel(logging.INFO)
 
 
 if __name__ == "__main__":

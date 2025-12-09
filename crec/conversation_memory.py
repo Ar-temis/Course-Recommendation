@@ -1,7 +1,8 @@
+from datetime import datetime
+
 from mem0 import Memory
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
-import datetime
 
 
 class MemoryTools:
@@ -35,7 +36,11 @@ class MemoryTools:
         in your previous conversations with the user.
         """
         try:
-            results = self.memory.search(query, user_id="default_user", limit=limit)
+            results = self.memory.search(
+                query,
+                user_id="default_user",
+                limit=limit,
+            )
             if not results:
                 return "No relevant memories found."
 
@@ -96,14 +101,14 @@ class ConversationMemory:
         self.history: list[ConversationMemoryEntry] = []
         self.summary: str = ""
 
-    def history_str(self, l: int = 0, r: Optional[int] = None):
-        if r is None:
-            r = len(self.history)
+    def history_str(self, left: int = 0, right: Optional[int] = None):
+        if right is None:
+            right = len(self.history)
 
         return "\n".join(
             [
                 i.model_dump_json(indent=4)
-                for i in self.history[l:r]
+                for i in self.history[left:right]
                 if not isinstance(i, dict)
             ]
         )
