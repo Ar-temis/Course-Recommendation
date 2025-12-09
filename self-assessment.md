@@ -34,6 +34,7 @@
     it plugs in my inputs and adds the chain-of-thought prompts after my inputs.
 
     You can see this happening in the analysis tool here:
+    <img width="2291" height="1192" alt="image" src="https://github.com/user-attachments/assets/cc6a82bc-d66b-40d2-87a1-ca8f369d2d1f" />
 
     The code is here:
     - https://github.com/Ar-temis/Course-Recommendation/blob/95b334eb7df4f6a6c30154f95b3aebda4b197d50/crec/synthesizer.py#L51
