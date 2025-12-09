@@ -25,8 +25,17 @@ In the project root folder, after setting up, you can run the app using:
 ```bash
 # For frontend app:
 flask run
+```
 
-# Just for terminal chatting without any frontend:
+For **terminal chatting**, you have to create two terminal instances.
+One for mlflow, and one for the agent.
+
+Terminal one:
+```bash
+mlflow server --backend-store-uri sqlite:///mydb.sqlite -p 8889
+```
+Terminal two:
+```bash
 python3 crec/agent.py
 ```
 
