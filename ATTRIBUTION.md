@@ -57,9 +57,14 @@ This project uses the following third-party resources:
 
 ## AI Assistance
 
+#### Ingestion pipelines
 ChatGPT (OpenAI) was used to help design the initial reader–writer multi-threaded architecture in  
 `crec/ingestion/major_req_dict.py`.  
 The implementation was later refactored manually to use Python queues.
+
+#### Mlflow second thread
+ChatGPT (OpenAI) was used to create the thread starter for mlflow at:
+https://github.com/Ar-temis/Course-Recommendation/blob/349f87fc70e7a5d46450de790664a2c56fe8da9c/app/__init__.py#L14-L42
 
 No other parts of this repository were written by AI.
 
