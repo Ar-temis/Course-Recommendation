@@ -38,6 +38,14 @@ Terminal two:
 ```bash
 python3 crec/agent.py
 ```
+## Documentation
+<img width="709" height="716" alt="image" src="https://github.com/user-attachments/assets/663b17b6-d2a7-42a7-ae49-6ad4bd1f4a1c" />
+
+There are 4 different retrievers for the agent:
+- Major retriever: Which retrieves major requirements from a dictionary, using soft keyword matching
+- Course retriever: Retrieves course info such as description and prerequisites, uses chromaDB vector store and metadata searching
+- Schedule Retriever: Retrieves next semester's schedule for specific courses or majors
+- Memory retriever: Searches for long term memory to get specific info about the user.
 
 ## Video Links
 **Primary Demo:** https://youtu.be/8glZdfNl_Uk 
