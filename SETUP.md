@@ -34,6 +34,9 @@ Now, we are ready to install the project dependencies.
 ```bash
 uv sync
 ```
+> [!IMPORTANT]
+> mlflow requires you to restart your shell. So, close your shell and come back to the project again.
+> Remember to source your virtual environment also.
 
 ## 2. Ollama
 The other major dependency you need to install is **Ollama**.
