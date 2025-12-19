@@ -63,7 +63,7 @@ ollama pull gpt-oss:20b-cloud
 ### embeddinggemma
 You should run the following command to install `embeddinggemma`:
 ```bash
-ollama pull embeddinggemma:300m
+ollama pull embeddinggemma:latest
 ```
 
 I ran the embedding model on my laptop with the following specs:
