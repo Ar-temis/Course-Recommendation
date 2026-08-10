@@ -151,6 +151,7 @@ def schedule_retriever(
         if result == "None":
             msg = f"{subject_code} does not exist in the schedule db."
             return LookupError(msg)
+        subject_code = result
 
     if subject_code and catalog_num:
         if isinstance(catalog_num, int):
